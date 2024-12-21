@@ -5,7 +5,7 @@ import lombok.*;
 @Data @NoArgsConstructor @AllArgsConstructor
 @DiscriminatorValue("Entreprise")
 
-public class Entreprise extends Users {
+public class Entreprise extends Client {
 
     private String nomEntreprise;
     private String raisonSocial;
