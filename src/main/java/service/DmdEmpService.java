@@ -1,10 +1,16 @@
 package service;
 
+import  java.util.*;
 import com.workify.agence_recrut.entites.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import repository.DmdEmpRepository;
 
+@Service
+@Transactional
 public class DmdEmpService {
-
+    @Autowired
     DmdEmpRepository dmdEmpRepository;
 
     public DmdEmp registerDmdEmp(String nom, String prenom, String email, String tel, String pass, String confPass){
