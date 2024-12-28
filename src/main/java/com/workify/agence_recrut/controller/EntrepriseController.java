@@ -13,14 +13,12 @@ public class EntrepriseController {
     @Autowired
     private EntrepriseService entrepriseService;
 
-    // Endpoint pour l'enregistrement d'une entreprise
-    @PostMapping("/register")
+    @PostMapping("/register/Entreprise")
     public ResponseEntity<Entreprise> registerEntreprise(@RequestParam String name, @RequestParam String ville, @RequestParam String email, @RequestParam String password, @RequestParam String confPassword,@RequestParam String telephone) {
         try {
-            // Appel au service pour enregistrer l'entreprise
             Entreprise entreprise = entrepriseService.registerEntreprise(name, ville, email, password, confPassword,telephone);
 
-            return ResponseEntity.ok(entreprise); // Retourne l'entreprise enregistrée avec un code 200
+            return ResponseEntity.ok(entreprise);
         } catch (IllegalArgumentException e) {
             // En cas d'erreur de validation (par exemple email déjà utilisé ou mots de passe non correspondants)
             return ResponseEntity.badRequest().body(null); // Retourne une réponse avec code 400 (Bad Request)

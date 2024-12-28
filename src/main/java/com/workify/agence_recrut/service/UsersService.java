@@ -8,7 +8,7 @@ import com.workify.agence_recrut.repository.UsersRepository;
 @Service
 @Transactional
 
-public class UserService {
+public class UsersService {
     @Autowired
     private UsersRepository userRepository;
 
