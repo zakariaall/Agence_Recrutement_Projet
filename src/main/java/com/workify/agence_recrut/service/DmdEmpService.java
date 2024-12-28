@@ -1,11 +1,10 @@
-package service;
+package com.workify.agence_recrut.service;
 
-import  java.util.*;
 import com.workify.agence_recrut.entites.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import repository.DmdEmpRepository;
+import com.workify.agence_recrut.repository.DmdEmpRepository;
 
 @Service
 @Transactional

@@ -1,5 +1,6 @@
 package com.workify.agence_recrut.entites;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 @Entity
 @NoArgsConstructor
@@ -8,10 +9,10 @@ import lombok.*;
 
 public class Entreprise extends Client {
 
+    @NotNull(message = "Le rôle est obligatoire")
     private String nomEntreprise;
     private String raisonSocial;
     private String description;
-
     public String getNomEntreprise() {
         return nomEntreprise;
     }

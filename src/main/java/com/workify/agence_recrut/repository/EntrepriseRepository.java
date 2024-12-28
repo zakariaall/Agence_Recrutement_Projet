@@ -1,4 +1,4 @@
-package repository;
+package com.workify.agence_recrut.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.workify.agence_recrut.entites.*;

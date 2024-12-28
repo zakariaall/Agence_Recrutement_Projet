@@ -1,9 +1,9 @@
-package service;
+package com.workify.agence_recrut.service;
 import com.workify.agence_recrut.entites.Users;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import repository.UsersRepository;
+import com.workify.agence_recrut.repository.UsersRepository;
 
 @Service
 @Transactional

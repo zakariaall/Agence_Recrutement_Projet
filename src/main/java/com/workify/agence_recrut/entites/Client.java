@@ -1,5 +1,6 @@
 package com.workify.agence_recrut.entites;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 @Entity
 @NoArgsConstructor
@@ -10,6 +11,8 @@ public class Client extends Users {
 
 
     private String adresse;
+    @NotNull(message = "Numero de telephone est obligatoire")
+    @Column(unique = true)
     private String telephone;
     private String photo;
     private String ville;

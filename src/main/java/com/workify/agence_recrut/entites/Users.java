@@ -10,7 +10,7 @@ import lombok.*;
 
 public class Users {
     @Id @GeneratedValue(strategy =GenerationType.IDENTITY )
-    protected long userId;
+    protected Long userId;
     @NotNull(message = "Le rôle est obligatoire")
     @Enumerated(EnumType.STRING)
     protected Roles roles;

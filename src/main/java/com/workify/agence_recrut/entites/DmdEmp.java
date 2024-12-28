@@ -1,15 +1,19 @@
 package com.workify.agence_recrut.entites;
 import jakarta.persistence.*;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 @Entity
+
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @DiscriminatorValue("DmdEmp")
 
 public class DmdEmp extends Client{
+    @NotNull(message = "Le Nom est obligatoire")
     private String nom;
+    @NotNull(message = "Le prenom est obligatoire")
     private String prenom;
     private String experience;
     private String nomEntreExp;
