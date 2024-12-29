@@ -29,4 +29,19 @@ public class DmdEmpService {
         dmdEmp.setRoles(Roles.DMDEMP);
     return dmdEmpRepository.save(dmdEmp);
     }
+    public void modifierSalaire(CurrentUserHolder currentUserHolder,double salaire){
+
+        if (salaire <= 0) {
+            throw new IllegalArgumentException("Le salaire doit être supérieur à zéro");
+        }
+        Long userId=currentUserHolder.getCurrentUser().getUserId();
+        DmdEmp dmdEmp=dmdEmpRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
+        if (currentUserHolder.getCurrentUser() == null) {
+            throw new IllegalArgumentException("Utilisateur non connecté ou invalide");
+        }
+        dmdEmp.setSalaireSouhaite(salaire);
+        dmdEmpRepository.save(dmdEmp);
+
+    }
+
 }

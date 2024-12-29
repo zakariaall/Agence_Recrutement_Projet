@@ -39,5 +39,11 @@ public class UsersController {
         return ResponseEntity.ok(user);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout() {
+        currentUserHolder.clear(); // Supprime l'utilisateur courant
+        return ResponseEntity.ok("Déconnecté avec succès !");
+    }
+
 
 }

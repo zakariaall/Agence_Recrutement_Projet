@@ -17,4 +17,5 @@ public class CurrentUserHolder {
     public void clear() {
         currentUser.remove();
     }
+
 }
