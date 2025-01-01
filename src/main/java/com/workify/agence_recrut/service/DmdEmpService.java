@@ -29,14 +29,17 @@ public class DmdEmpService {
         dmdEmp.setRoles(Roles.DMDEMP);
     return dmdEmpRepository.save(dmdEmp);
     }
-    public void modifierSalaire(double salaire) {
-
+    public void modifierSalaire(Long userId, double salaire) {
         if (salaire <= 0) {
             throw new IllegalArgumentException("Le salaire doit être supérieur à zéro");
         }
 
-
-
+        DmdEmp dmdEmp = dmdEmpRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
+        dmdEmp.setSalaireSouhaite(salaire);
+        dmdEmpRepository.save(dmdEmp);
     }
 
 }
+
+

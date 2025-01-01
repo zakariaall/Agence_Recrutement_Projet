@@ -1,5 +1,6 @@
 package com.workify.agence_recrut.service;
 
+import com.workify.agence_recrut.config.JwtConfig;
 import com.workify.agence_recrut.entites.Users;
 import com.workify.agence_recrut.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,7 @@ public class UsersService implements UserDetailsService {
 
     public Users login(String email, String password) {
         logger.info("Tentative de connexion pour l'utilisateur avec l'email : {}", email);
+        JwtConfig jwtConfig = new JwtConfig();
 
         Users user = usersRepository.findByEmail(email);
         if (user == null) {
@@ -59,7 +61,7 @@ public class UsersService implements UserDetailsService {
             logger.warn("Mot de passe incorrect pour l'utilisateur : {}", email);
             throw new IllegalArgumentException("Mot de passe incorrect !");
         }
-
+        String token = jwtConfig.generateToken(user.getEmail());
         logger.info("Connexion réussie pour l'utilisateur : {}", email);
         return user;
     }

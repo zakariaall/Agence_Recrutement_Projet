@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/")
 public class DmdEmpController {
@@ -28,15 +30,14 @@ public class DmdEmpController {
 
     }
     @PostMapping("/DmdEmp/modifierSal")
-    public ResponseEntity<String> modifierSal(@RequestParam double salaire) {
+    public ResponseEntity<?> modifierSal(@RequestParam Long userId, @RequestParam double salaire) {
         try {
-            dmdEmpService.modifierSalaire( salaire);
+            dmdEmpService.modifierSalaire(userId, salaire);
             return ResponseEntity.ok("Salaire modifié avec succès");
         } catch (IllegalArgumentException e) {
-            // En cas d'erreur (par exemple, utilisateur non trouvé ou validation échouée)
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Une erreur inattendue s'est produite");
+            return ResponseEntity.status(500).body(Map.of("error", "Une erreur inattendue s'est produite"));
         }
     }
 

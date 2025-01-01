@@ -1,54 +1,50 @@
 package com.workify.agence_recrut.config;
 
-import com.nimbusds.jose.jwk.source.ImmutableSecret;
-import com.nimbusds.jose.proc.SecurityContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
-import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Base64;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-@Configuration
+@Component
 public class JwtConfig {
 
-    // Clé secrète pour signer les JWT
-    private static final String SECRET_KEY = "mySuperSecretKeyForJWTGeneration"; // Change cette clé pour plus de sécurité
+    @Value("${jwt.secret}")
+    private static String SECRET_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ";
 
-    @Bean
-    public SecretKey secretKey() {
-        byte[] decodedKey = Base64.getDecoder().decode(SECRET_KEY);
-        return new SecretKeySpec(decodedKey, 0, decodedKey.length, "HmacSHA256");
+    private static final long EXPIRATION_TIME = 86400000; // 1 jour en millisecondes
+
+    public static String generateToken(String email) {
+        Map<String, Object> claims = new HashMap<>();
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(email)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+                .compact();
     }
 
-    @Bean
-    public JwtEncoder jwtEncoder() {
-        return new NimbusJwtEncoder(new ImmutableSecret<>(secretKey()));
+    public String extractEmail(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.getSubject();
     }
 
-    @Bean
-    public JwtDecoder jwtDecoder() {
-        return NimbusJwtDecoder.withSecretKey(secretKey()).macAlgorithm(MacAlgorithm.HS256).build();
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 
-    // Méthode pour générer un JWT
-    public String generateJwt(String subject) {
-        JwtEncoder encoder = jwtEncoder();
-        JwtClaimsSet claims = JwtClaimsSet.builder()
-                .subject(subject)
-                .issuedAt(Instant.now())
-                .expiresAt(Instant.now().plus(1, ChronoUnit.HOURS))
-                .build();
+    public boolean isTokenValid(String token, String email) {
+        String extractedEmail = extractEmail(token);
+        return (extractedEmail.equals(email) && !isTokenExpired(token));
+    }
 
-        return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+    private boolean isTokenExpired(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.getExpiration().before(new Date());
     }
 }

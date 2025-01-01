@@ -28,7 +28,8 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // Désactive la protection CSRF, utile pour les API stateless ou AJAX
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login","/register/DmdEmp","/register/Entreprise").permitAll() // Permet l'accès sans authentification à la page de connexion et de register
+                        .requestMatchers("/login","/register/DmdEmp","/register/Entreprise","/DmdEmp/modifierSal").permitAll()
+                        .requestMatchers("/DmdEmp/modifierSal").hasAnyRole("ADMIN", "DMDEMP")
                         .anyRequest().authenticated() // Requiert une authentification pour toutes les autres requêtes
                 )
             /*    .formLogin(form -> form
